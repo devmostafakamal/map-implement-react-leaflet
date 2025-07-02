@@ -1,15 +1,39 @@
 import React from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import ProFastLogo from "./ProFastLogo/ProFastLogo";
+import useAuth from "../../hooks/useAuth";
 
 function Navbar() {
+  const { user, logOut } = useAuth();
+  const handleLogout = () => {
+    logOut()
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const navItems = (
     <>
       <li>
         <NavLink to="/">Home</NavLink>
       </li>
       <li>
+        <NavLink to="/sendParcel">Send A Parcel</NavLink>
+      </li>
+      <li>
         <NavLink to="/coverage">Coverage</NavLink>
+      </li>
+      {user && (
+        <>
+          <li>
+            <NavLink to="/dashboard">Dashboard</NavLink>
+          </li>
+        </>
+      )}
+      <li>
+        <NavLink to="/be-rider">Be A Rider</NavLink>
       </li>
     </>
   );
@@ -47,7 +71,15 @@ function Navbar() {
         <ul className="menu menu-horizontal px-1">{navItems}</ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        {user ? (
+          <button onClick={handleLogout} className="btn btn-primary text-black">
+            Logout
+          </button>
+        ) : (
+          <Link to="/login">
+            <button className="btn btn-primary text-black">Login</button>
+          </Link>
+        )}
       </div>
     </div>
   );

@@ -1,15 +1,41 @@
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
+import { useLocation, useNavigate } from "react-router";
+import useAxios from "../../../hooks/useAxios";
 
 function SocialLogin() {
   const { signWithGoogle } = useAuth();
+  const axiosInstance = useAxios();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/";
   const handleGoogleSignIn = () => {
     signWithGoogle()
-      .then((result) => console.log(result.user))
+      .then(async (result) => {
+        const user = result.user;
+        console.log("Google signed-in user:", user);
+
+        const userInfo = {
+          email: user.email,
+          role: "user", // default role
+          created_at: new Date().toISOString(),
+          last_log_in: new Date().toISOString(),
+        };
+
+        try {
+          const res = await axiosInstance.post("/users", userInfo);
+          console.log("user info updated:", res.data);
+
+          navigate(from); // Redirect after saving user
+        } catch (error) {
+          console.log("Error saving user:", error);
+        }
+      })
       .catch((error) => {
-        console.log(error);
+        console.log("Google sign-in error:", error);
       });
   };
+
   return (
     <>
       <p className="text-center mt-4">OR</p>
