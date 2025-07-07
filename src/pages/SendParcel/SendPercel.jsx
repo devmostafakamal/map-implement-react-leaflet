@@ -103,6 +103,7 @@ const SendParcel = () => {
       trackingId,
       status: "pending",
       paid: false,
+      delivery_status: "not_collected",
       transactionId: null,
     };
 
@@ -162,7 +163,7 @@ const SendParcel = () => {
     console.log("Saving Parcel:", finalData);
 
     toast.success("✅ Parcel information submitted successfully!");
-    // reset(); // reset the form
+    reset(); // reset the form
     setDeliveryCost(null);
     setPendingData(null);
   };

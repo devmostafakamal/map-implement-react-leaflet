@@ -9,9 +9,16 @@ import {
   FaUserEdit,
   FaClock,
   FaMotorcycle,
+  FaUserShield,
+  FaTasks,
+  FaCheckCircle,
+  FaWallet,
 } from "react-icons/fa";
+import useUserRole from "../hooks/useUserRole";
 
 function DashboardLayout() {
+  const { role, isLoading } = useUserRole();
+  // console.log(role);
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -89,16 +96,58 @@ function DashboardLayout() {
               <FaUserEdit className="inline mr-2" /> Update Profile
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/dashboard/pendingRiders">
-              <FaClock className="inline mr-2" /> Pending Riders
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/activeRiders">
-              <FaMotorcycle className="inline mr-2" /> Active Riders
-            </NavLink>
-          </li>
+          {/* rider links */}
+
+          {!isLoading && role === "rider" && (
+            <>
+              <li>
+                <NavLink to="/dashboard/pendingDeliveries">
+                  <FaTasks className="inline mr-2" /> Pending Deliveries
+                </NavLink>
+              </li>
+              {/* completed delivery */}
+              <li>
+                <NavLink to="/dashboard/completed-deliveries">
+                  <FaCheckCircle className="inline mr-2" /> Completed Deliveries
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/my-earnings">
+                  <FaWallet className="inline mr-2" /> My Earnings
+                </NavLink>
+              </li>
+            </>
+          )}
+
+          {/* admin link */}
+          {!isLoading && role === "admin" && (
+            <>
+              <li>
+                <NavLink to="/dashboard/pendingRiders">
+                  <FaClock className="inline mr-2" /> Pending Riders
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/activeRiders">
+                  <FaMotorcycle className="inline mr-2" /> Active Riders
+                </NavLink>
+              </li>
+              {/* admin routes */}
+              <li>
+                <NavLink to="/dashboard/makeAdmin">
+                  {" "}
+                  <FaUserShield className="inline mr-2" />
+                  Make Admin
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/assignRider">
+                  <FaMotorcycle className="inline mr-2" />
+                  Assign Rider
+                </NavLink>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </div>

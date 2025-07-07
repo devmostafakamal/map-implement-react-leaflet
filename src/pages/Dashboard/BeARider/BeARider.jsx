@@ -44,6 +44,7 @@ const BeARider = () => {
       email: user.email,
       status: "pending",
       appliedAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+      role: "rider",
     };
     // send rider to database
 

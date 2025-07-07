@@ -66,7 +66,11 @@ function Login() {
 
             <p>
               New to this site? Please{" "}
-              <Link className="btn bg-green-400" to="/register">
+              <Link
+                state={{ from }}
+                className="btn bg-green-400"
+                to="/register"
+              >
                 Register
               </Link>
             </p>
